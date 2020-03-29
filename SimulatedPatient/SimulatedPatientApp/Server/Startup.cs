@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using RepositoryInfrastructure;
 using SimulatedPatientApp.Server.Data;
 using SimulatedPatientApp.Server.Models;
 
@@ -31,7 +32,12 @@ namespace SimulatedPatientApp.Server
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("IdentityConnection")));
+
+            services.AddDbContext<DomainContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DomainConnection")));
+
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
